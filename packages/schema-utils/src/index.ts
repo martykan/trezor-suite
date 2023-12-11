@@ -1,4 +1,4 @@
-import { JavaScriptTypeBuilder, Static, TSchema } from '@sinclair/typebox';
+import { JavaScriptTypeBuilder, Static, TSchema, TObject, Optional } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
 import { Mixin } from 'ts-mixer';
 
@@ -17,4 +17,5 @@ export function Validate<T extends TSchema>(schema: T, value: unknown): value is
 }
 
 export const Type = new CustomTypeBuilder();
-export type { Static };
+export { Optional };
+export type { Static, TObject };
