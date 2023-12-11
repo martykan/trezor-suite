@@ -11,8 +11,10 @@
     ],
     "references": [
         { "path": "../components" },
+        { "path": "../connect" },
         { "path": "../connect-web" },
-        { "path": "../protobuf" }
+        { "path": "../protobuf" },
+        { "path": "../schema-utils" }
     ],
     "ts-node": {
         "compilerOptions": {
