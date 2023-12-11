@@ -1,8 +1,9 @@
 import { AbstractMethod } from '../core/AbstractMethod';
-import { validateParams, getFirmwareRange } from './common/paramsValidator';
+import { getFirmwareRange } from './common/paramsValidator';
 import { validatePath, getScriptType } from '../utils/pathUtils';
 import { getBitcoinNetwork } from '../data/coinInfo';
 import { PROTO } from '../constants';
+import { Validate } from '@trezor/schema-utils';
 
 export default class AuthorizeCoinjoin extends AbstractMethod<
     'authorizeCoinjoin',
@@ -11,18 +12,7 @@ export default class AuthorizeCoinjoin extends AbstractMethod<
     init() {
         const { payload } = this;
 
-        validateParams(payload, [
-            { name: 'path', required: true },
-            { name: 'coordinator', type: 'string', required: true },
-            { name: 'maxRounds', type: 'number', required: true },
-            { name: 'maxCoordinatorFeeRate', type: 'number', required: true },
-            { name: 'maxFeePerKvbyte', type: 'number', required: true },
-            { name: 'coin', type: 'string' },
-            { name: 'scriptType', type: 'string' },
-            { name: 'amountUnit', type: 'uint' },
-            { name: 'preauthorized', type: 'boolean' },
-        ]);
-
+        Validate(PROTO.AuthorizeCoinJoin, payload);
         const address_n = validatePath(payload.path, 3);
         const script_type = payload.scriptType || getScriptType(address_n);
         const coinInfo = getBitcoinNetwork(payload.coin || address_n);
@@ -51,7 +41,7 @@ export default class AuthorizeCoinjoin extends AbstractMethod<
             }
         }
 
-        const response = await cmd.typedCall('AuthorizeCoinJoin', 'Success', this.params);
+        const response = await cmd.typedCallV2('AuthorizeCoinJoin', 'Success', this.params);
         return response.message;
     }
 }
