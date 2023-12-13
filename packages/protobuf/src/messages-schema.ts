@@ -249,6 +249,7 @@ export const SignMessage = Type.Object({
     coin_name: Type.Optional(Type.String()),
     script_type: Type.Optional(InputScriptType),
     no_script_type: Type.Optional(Type.Boolean()),
+    chunkify: Type.Optional(Type.Boolean()),
 });
 
 export type MessageSignature = Static<typeof MessageSignature>;
@@ -263,6 +264,7 @@ export const VerifyMessage = Type.Object({
     signature: Type.String(),
     message: Type.String(),
     coin_name: Type.Optional(Type.String()),
+    chunkify: Type.Optional(Type.Boolean()),
 });
 
 export type CoinJoinRequest = Static<typeof CoinJoinRequest>;
@@ -1587,6 +1589,7 @@ export const EthereumSignMessage = Type.Object({
     address_n: Type.Array(Type.Number()),
     message: Type.String(),
     encoded_network: Type.Optional(Type.ArrayBuffer()),
+    chunkify: Type.Optional(Type.Boolean()),
 });
 
 export type EthereumMessageSignature = Static<typeof EthereumMessageSignature>;
@@ -1600,6 +1603,7 @@ export const EthereumVerifyMessage = Type.Object({
     signature: Type.String(),
     message: Type.String(),
     address: Type.String(),
+    chunkify: Type.Optional(Type.Boolean()),
 });
 
 export type EthereumSignTypedHash = Static<typeof EthereumSignTypedHash>;
@@ -1928,8 +1932,19 @@ export const PreauthorizedRequest = Type.Object({});
 export type CancelAuthorization = Static<typeof CancelAuthorization>;
 export const CancelAuthorization = Type.Object({});
 
+export enum BootCommand {
+    STOP_AND_WAIT = 0,
+    INSTALL_UPGRADE = 1,
+}
+
+export type EnumBootCommand = Static<typeof EnumBootCommand>;
+export const EnumBootCommand = Type.Enum(BootCommand);
+
 export type RebootToBootloader = Static<typeof RebootToBootloader>;
-export const RebootToBootloader = Type.Object({});
+export const RebootToBootloader = Type.Object({
+    boot_command: Type.Optional(EnumBootCommand),
+    firmware_header: Type.Optional(Type.String()),
+});
 
 export type GetNonce = Static<typeof GetNonce>;
 export const GetNonce = Type.Object({});
@@ -2181,6 +2196,7 @@ export type SolanaGetAddress = Static<typeof SolanaGetAddress>;
 export const SolanaGetAddress = Type.Object({
     address_n: Type.Array(Type.Number()),
     show_display: Type.Optional(Type.Boolean()),
+    chunkify: Type.Optional(Type.Boolean()),
 });
 
 export type SolanaAddress = Static<typeof SolanaAddress>;
@@ -2188,10 +2204,24 @@ export const SolanaAddress = Type.Object({
     address: Type.String(),
 });
 
+export type SolanaTxTokenAccountInfo = Static<typeof SolanaTxTokenAccountInfo>;
+export const SolanaTxTokenAccountInfo = Type.Object({
+    base_address: Type.String(),
+    token_program: Type.String(),
+    token_mint: Type.String(),
+    token_account: Type.String(),
+});
+
+export type SolanaTxAdditionalInfo = Static<typeof SolanaTxAdditionalInfo>;
+export const SolanaTxAdditionalInfo = Type.Object({
+    token_accounts_infos: Type.Array(SolanaTxTokenAccountInfo),
+});
+
 export type SolanaSignTx = Static<typeof SolanaSignTx>;
 export const SolanaSignTx = Type.Object({
     address_n: Type.Array(Type.Number()),
     serialized_tx: Type.String(),
+    additional_info: Type.Optional(SolanaTxAdditionalInfo),
 });
 
 export type SolanaTxSignature = Static<typeof SolanaTxSignature>;
@@ -2773,6 +2803,8 @@ export const MessageType = Type.Object({
     SolanaPublicKey,
     SolanaGetAddress,
     SolanaAddress,
+    SolanaTxTokenAccountInfo,
+    SolanaTxAdditionalInfo,
     SolanaSignTx,
     SolanaTxSignature,
     StellarAsset,
