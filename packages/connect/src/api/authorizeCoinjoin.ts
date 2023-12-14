@@ -42,7 +42,7 @@ export default class AuthorizeCoinjoin extends AbstractMethod<
             }
         }
 
-        const response = await cmd.typedCallV2('AuthorizeCoinJoin', 'Success', this.params);
+        const response = await cmd.typedCall('AuthorizeCoinJoin', 'Success', this.params);
         return response.message;
     }
 }
