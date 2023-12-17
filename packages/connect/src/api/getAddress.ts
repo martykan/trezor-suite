@@ -6,7 +6,9 @@ import { validatePath, getLabel, getSerializedPath } from '../utils/pathUtils';
 import { getBitcoinNetwork, fixCoinInfoNetwork, getUniqueNetworks } from '../data/coinInfo';
 import { PROTO, ERRORS } from '../constants';
 import { UI, createUiMessage } from '../events';
-import type { BitcoinNetworkInfo } from '../types';
+import { Bundle, type BitcoinNetworkInfo } from '../types';
+import { Assert } from '@trezor/schema-utils';
+import { GetAddress as GetAddressSchema } from '../types/api/getAddress';
 
 type Params = PROTO.GetAddress & {
     address?: string;
@@ -29,24 +31,9 @@ export default class GetAddress extends AbstractMethod<'getAddress', Params[]> {
             : this.payload;
 
         // validate bundle type
-        validateParams(payload, [
-            { name: 'bundle', type: 'array' },
-            { name: 'useEventListener', type: 'boolean' },
-        ]);
+        Assert(Bundle(GetAddressSchema), payload);
 
         this.params = payload.bundle.map(batch => {
-            // validate incoming parameters for each batch
-            validateParams(batch, [
-                { name: 'path', required: true },
-                { name: 'coin', type: 'string' },
-                { name: 'address', type: 'string' },
-                { name: 'showOnTrezor', type: 'boolean' },
-                { name: 'multisig', type: 'object' },
-                { name: 'scriptType', type: 'string' },
-                { name: 'unlockPath', type: 'object' },
-                { name: 'chunkify', type: 'boolean' },
-            ]);
-
             if (batch.unlockPath) {
                 validateParams(batch.unlockPath, [
                     { name: 'address_n', required: true, type: 'array' },
