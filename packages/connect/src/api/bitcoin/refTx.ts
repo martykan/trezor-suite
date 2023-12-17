@@ -21,7 +21,7 @@ import type {
 } from '../../types';
 import type { RefTransaction, TransactionOptions } from '../../types/api/bitcoin';
 import { PROTO } from '../../constants';
-import { Assert, Type } from '@trezor/schema-utils/src';
+import { Assert, Type } from '@trezor/schema-utils';
 
 // Referenced transactions are not required if:
 // - all internal inputs script_type === SPENDTAPROOT

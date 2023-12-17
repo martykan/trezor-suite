@@ -20,6 +20,11 @@ export const Network = Type.Object({
     forkId: Type.Optional(Type.Number()),
 });
 
+export type CoinObj = Static<typeof CoinObj>;
+export const CoinObj = Type.Object({
+    coin: Type.String(),
+});
+
 export type CoinSupport = Static<typeof CoinSupport>;
 export const CoinSupport = Type.Object({
     connect: Type.Boolean(),
