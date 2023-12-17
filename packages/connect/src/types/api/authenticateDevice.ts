@@ -1,4 +1,4 @@
-import { Static, Type } from 'packages/schema-utils/src';
+import { Static, Type } from '@trezor/schema-utils';
 import { DeviceAuthenticityConfig } from '../../data/deviceAuthenticityConfig';
 import type { Params, Response } from '../params';
 

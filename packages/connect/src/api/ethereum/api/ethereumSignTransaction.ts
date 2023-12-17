@@ -13,8 +13,12 @@ import {
     ethereumNetworkInfoFromDefinition,
 } from '../ethereumDefinitions';
 import type { EthereumTransaction, EthereumTransactionEIP1559 } from '../../../types/api/ethereum';
-import type { EthereumNetworkInfo } from '../../../types';
+import {
+    EthereumNetworkInfo,
+    EthereumSignTransaction as EthereumSignTransactionSchema,
+} from '../../../types';
 import type { EthereumDefinitions } from '@trezor/protobuf/lib/messages';
+import { Assert } from '@trezor/schema-utils';
 
 type Params = {
     path: number[];
@@ -50,11 +54,7 @@ export default class EthereumSignTransaction extends AbstractMethod<
 
         const { payload } = this;
         // validate incoming parameters
-        validateParams(payload, [
-            { name: 'path', required: true },
-            { name: 'transaction', required: true },
-            { name: 'chunkify', type: 'boolean' },
-        ]);
+        Assert(EthereumSignTransactionSchema, payload);
 
         const path = validatePath(payload.path, 3);
         const network = getEthereumNetwork(path);
