@@ -1,7 +1,7 @@
 // origin: https://github.com/trezor/connect/blob/develop/src/js/core/methods/EthereumSignTransaction.js
 
 import { AbstractMethod } from '../../../core/AbstractMethod';
-import { validateParams, getFirmwareRange } from '../../common/paramsValidator';
+import { getFirmwareRange } from '../../common/paramsValidator';
 import { getSlip44ByPath, validatePath } from '../../../utils/pathUtils';
 import { getEthereumNetwork } from '../../../data/coinInfo';
 import { getNetworkLabel } from '../../../utils/ethereumUtils';
@@ -75,30 +75,8 @@ export default class EthereumSignTransaction extends AbstractMethod<
         );
 
         if (isEIP1559) {
-            validateParams(tx, [
-                { name: 'to', type: 'string', required: true },
-                { name: 'value', type: 'string', required: true },
-                { name: 'gasLimit', type: 'string', required: true },
-                { name: 'maxFeePerGas', type: 'string', required: true },
-                { name: 'maxPriorityFeePerGas', type: 'string', required: true },
-                { name: 'nonce', type: 'string', required: true },
-                { name: 'data', type: 'string' },
-                { name: 'chainId', type: 'number', required: true },
-            ]);
-
             this.params = { path, network, type: 'eip1559', tx: strip(tx), chunkify };
         } else {
-            validateParams(tx, [
-                { name: 'to', type: 'string', required: true },
-                { name: 'value', type: 'string', required: true },
-                { name: 'gasLimit', type: 'string', required: true },
-                { name: 'gasPrice', type: 'string', required: true },
-                { name: 'nonce', type: 'string', required: true },
-                { name: 'data', type: 'string' },
-                { name: 'chainId', type: 'number' },
-                { name: 'txType', type: 'number' },
-            ]);
-
             this.params = { path, network, type: 'legacy', tx: strip(tx), chunkify };
         }
 
