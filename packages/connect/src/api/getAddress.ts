@@ -1,7 +1,7 @@
 // origin: https://github.com/trezor/connect/blob/develop/src/js/core/methods/GetAddress.js
 
 import { AbstractMethod, MethodReturnType } from '../core/AbstractMethod';
-import { validateParams, validateCoinPath, getFirmwareRange } from './common/paramsValidator';
+import { validateCoinPath, getFirmwareRange } from './common/paramsValidator';
 import { validatePath, getLabel, getSerializedPath } from '../utils/pathUtils';
 import { getBitcoinNetwork, fixCoinInfoNetwork, getUniqueNetworks } from '../data/coinInfo';
 import { PROTO, ERRORS } from '../constants';
@@ -34,13 +34,6 @@ export default class GetAddress extends AbstractMethod<'getAddress', Params[]> {
         Assert(Bundle(GetAddressSchema), payload);
 
         this.params = payload.bundle.map(batch => {
-            if (batch.unlockPath) {
-                validateParams(batch.unlockPath, [
-                    { name: 'address_n', required: true, type: 'array' },
-                    { name: 'mac', required: true, type: 'string' },
-                ]);
-            }
-
             const path = validatePath(batch.path, 1);
             let coinInfo: BitcoinNetworkInfo | undefined;
             if (batch.coin) {

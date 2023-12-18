@@ -1,6 +1,6 @@
 // API params
 
-import { Type, TObject, Static } from '@trezor/schema-utils';
+import { Type, TSchema, Static } from '@trezor/schema-utils';
 
 export interface CommonParams {
     device?: {
@@ -23,7 +23,7 @@ export type Params<T> = CommonParams & T & { bundle?: undefined };
 interface Bundle<T> {
     bundle: T[];
 }
-export const Bundle = <T extends TObject>(type: T) => Type.Object({ bundle: Type.Array(type) });
+export const Bundle = <T extends TSchema>(type: T) => Type.Object({ bundle: Type.Array(type) });
 
 export type BundledParams<T> = CommonParams & Bundle<T>;
 

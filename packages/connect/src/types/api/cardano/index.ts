@@ -66,9 +66,13 @@ export interface CardanoNativeScriptHash {
 
 // cardanoGetPublicKey
 
-export interface CardanoGetPublicKey extends GetPublicKey {
-    derivationType?: PROTO.CardanoDerivationType;
-}
+export type CardanoGetPublicKey = Static<typeof CardanoGetPublicKey>;
+export const CardanoGetPublicKey = Type.Intersect([
+    GetPublicKey,
+    Type.Object({
+        derivationType: Type.Optional(PROTO.EnumCardanoDerivationType),
+    }),
+]);
 
 export interface CardanoPublicKey extends PublicKey {
     node: PROTO.HDNodeType;

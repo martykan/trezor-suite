@@ -48,4 +48,4 @@ export function Assert<T extends TSchema>(schema: T, value: unknown): asserts va
 
 export const Type = new CustomTypeBuilder();
 export { Optional };
-export type { Static, TObject };
+export type { Static, TObject, TSchema };
