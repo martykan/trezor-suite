@@ -1,33 +1,37 @@
-import type { PROTO } from '../../../constants';
-import type { GetPublicKey, PublicKey, DerivationPath } from '../../params';
+import { Type, Static } from '@trezor/schema-utils';
+import { PROTO } from '../../../constants';
+import { GetPublicKey, PublicKey, DerivationPath } from '../../params';
 
 // cardanoGetAddress
 
-export interface CardanoCertificatePointer {
-    blockIndex: number;
-    txIndex: number;
-    certificateIndex: number;
-}
+export type CardanoCertificatePointer = Static<typeof CardanoCertificatePointer>;
+export const CardanoCertificatePointer = Type.Object({
+    blockIndex: Type.Number(),
+    txIndex: Type.Number(),
+    certificateIndex: Type.Number(),
+});
 
-export interface CardanoAddressParameters {
-    addressType: PROTO.CardanoAddressType;
-    path?: DerivationPath;
-    stakingPath?: DerivationPath;
-    stakingKeyHash?: string;
-    certificatePointer?: CardanoCertificatePointer;
-    paymentScriptHash?: string;
-    stakingScriptHash?: string;
-}
+export type CardanoAddressParameters = Static<typeof CardanoAddressParameters>;
+export const CardanoAddressParameters = Type.Object({
+    addressType: PROTO.EnumCardanoAddressType,
+    path: Type.Optional(DerivationPath),
+    stakingPath: Type.Optional(DerivationPath),
+    stakingKeyHash: Type.Optional(Type.String()),
+    certificatePointer: Type.Optional(CardanoCertificatePointer),
+    paymentScriptHash: Type.Optional(Type.String()),
+    stakingScriptHash: Type.Optional(Type.String()),
+});
 
-export interface CardanoGetAddress {
-    addressParameters: CardanoAddressParameters;
-    protocolMagic: number;
-    networkId: number;
-    address?: string;
-    showOnTrezor?: boolean;
-    derivationType?: PROTO.CardanoDerivationType;
-    chunkify?: boolean;
-}
+export type CardanoGetAddress = Static<typeof CardanoGetAddress>;
+export const CardanoGetAddress = Type.Object({
+    addressParameters: CardanoAddressParameters,
+    protocolMagic: Type.Number(),
+    networkId: Type.Number(),
+    address: Type.Optional(Type.String()),
+    showOnTrezor: Type.Optional(Type.Boolean()),
+    derivationType: Type.Optional(PROTO.EnumCardanoDerivationType),
+    chunkify: Type.Optional(Type.Boolean()),
+});
 
 export interface CardanoAddress {
     addressParameters: CardanoAddressParameters;
