@@ -7,7 +7,7 @@ import { Type, Static } from '@trezor/schema-utils';
 
 export type StellarAsset = Static<typeof StellarAsset>;
 export const StellarAsset = Type.Object({
-    type: PROTO.EnumStellarAssetType,
+    type: Type.Union([PROTO.EnumStellarAssetType, Type.KeyOfEnum(PROTO.StellarAssetType)]),
     code: Type.Optional(Type.String()),
     issuer: Type.Optional(Type.String()),
 });
@@ -36,10 +36,10 @@ export const StellarPathPaymentStrictReceiveOperation = Type.Object({
     type: Type.Literal('pathPaymentStrictReceive'), // Proto: "StellarPathPaymentStrictReceiveOp"
     source: Type.Optional(Type.String()), // Proto: "source_account"
     sendAsset: StellarAsset, // Proto: "send_asset"
-    sendMax: Type.String(), // Proto: "send_max"
+    sendMax: Type.Uint(), // Proto: "send_max"
     destination: Type.String(), // Proto: "destination_account"
     destAsset: StellarAsset, // Proto: "destination_asset"
-    destAmount: Type.String(), // Proto "destination_amount"
+    destAmount: Type.Uint(), // Proto "destination_amount"
     path: Type.Optional(Type.Array(StellarAsset)), // Proto: "paths"
 });
 
@@ -50,10 +50,10 @@ export const StellarPathPaymentStrictSendOperation = Type.Object({
     type: Type.Literal('pathPaymentStrictSend'), // Proto: "StellarPathPaymentStrictSendOp"
     source: Type.Optional(Type.String()), // Proto: "source_account"
     sendAsset: StellarAsset, // Proto: "send_asset"
-    sendAmount: Type.String(), // Proto: "send_amount"
+    sendAmount: Type.Uint(), // Proto: "send_amount"
     destination: Type.String(), // Proto: "destination_account"
     destAsset: StellarAsset, // Proto: "destination_asset"
-    destMin: Type.String(), // Proto "destination_min"
+    destMin: Type.Uint(), // Proto "destination_min"
     path: Type.Optional(Type.Array(StellarAsset)), // Proto: "paths"
 });
 
@@ -63,7 +63,7 @@ export const StellarPassiveSellOfferOperation = Type.Object({
     source: Type.Optional(Type.String()), // Proto: "source_account"
     buying: StellarAsset, // Proto: "buying_asset"
     selling: StellarAsset, // Proto: "selling_asset"
-    amount: Type.String(), // Proto: ok
+    amount: Type.Uint(), // Proto: ok
     price: Type.Object({
         // Proto: "price_n" and "price_d"
         n: Type.Number(),
@@ -77,8 +77,8 @@ export const StellarManageSellOfferOperation = Type.Object({
     source: Type.Optional(Type.String()), // Proto: "source_account"
     buying: StellarAsset, // Proto: "buying_asset"
     selling: StellarAsset, // Proto: "selling_asset"
-    amount: Type.String(), // Proto: ok
-    offerId: Type.Optional(Type.String()), // Proto: "offer_id" // not found in stellar-sdk
+    amount: Type.Uint(), // Proto: ok
+    offerId: Type.Optional(Type.Uint()), // Proto: "offer_id" // not found in stellar-sdk
     price: Type.Object({
         // Proto: "price_n" and "price_d"
         n: Type.Number(),
@@ -92,8 +92,8 @@ export const StellarManageBuyOfferOperation = Type.Object({
     source: Type.Optional(Type.String()), // Proto: "source_account"
     buying: StellarAsset, // Proto: "buying_asset"
     selling: StellarAsset, // Proto: "selling_asset"
-    amount: Type.String(), // Proto: ok
-    offerId: Type.Optional(Type.String()), // Proto: "offer_id" // not found in stellar-sdk
+    amount: Type.Uint(), // Proto: ok
+    offerId: Type.Optional(Type.Uint()), // Proto: "offer_id" // not found in stellar-sdk
     price: Type.Object({
         // Proto: "price_n" and "price_d"
         n: Type.Number(),
@@ -160,7 +160,7 @@ export type StellarBumpSequenceOperation = Static<typeof StellarBumpSequenceOper
 export const StellarBumpSequenceOperation = Type.Object({
     type: Type.Literal('bumpSequence'), // Proto: "StellarBumpSequenceOp"
     source: Type.Optional(Type.String()), // Proto: "source_account"
-    bumpTo: Type.String(), // Proto: "bump_to"
+    bumpTo: Type.Uint(), // Proto: "bump_to"
 });
 
 // (?) Missing in Proto messages, but present in Stellar API
@@ -202,7 +202,7 @@ export const StellarTransaction = Type.Object({
     memo: Type.Optional(
         Type.Object({
             type: PROTO.EnumStellarMemoType, // Proto: "memo_type"
-            id: Type.Optional(Type.String()), // Proto: "memo_id"
+            id: Type.Optional(Type.Uint()), // Proto: "memo_id"
             text: Type.Optional(Type.String()), // Proto: "memo_text"
             hash: Type.Optional(Type.Union([Type.String(), Type.Buffer()])), // Proto: "memo_hash"
         }),
