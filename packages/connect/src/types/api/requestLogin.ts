@@ -20,7 +20,7 @@ export type RequestLoginAsync = Static<typeof RequestLoginAsync>;
 export const RequestLoginAsync = Type.Object({
     challengeHidden: Type.Optional(Type.Undefined()),
     challengeVisual: Type.Optional(Type.Undefined()),
-    asyncChallenge: Type.Boolean(),
+    asyncChallenge: Type.Optional(Type.Boolean()),
     callback: Type.Function([], LoginChallenge),
 });
 

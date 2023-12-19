@@ -4,7 +4,6 @@ import { Type, Static } from '@trezor/schema-utils';
 
 // NEM types from nem-sdk
 // https://nemproject.github.io/#transferTransaction
-/* eslint-disable camelcase */
 
 export type MosaicID = Static<typeof MosaicID>;
 export const MosaicID = Type.Object({
