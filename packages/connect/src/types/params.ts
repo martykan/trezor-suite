@@ -85,8 +85,9 @@ export const GetPublicKey = Type.Object({
     chunkify: Type.Optional(Type.Boolean()),
 });
 
-export interface PublicKey {
-    publicKey: string;
-    path: number[];
-    serializedPath: string;
-}
+export type PublicKey = Static<typeof PublicKey>;
+export const PublicKey = Type.Object({
+    publicKey: Type.String(),
+    path: Type.Array(Type.Number()),
+    serializedPath: Type.String(),
+});

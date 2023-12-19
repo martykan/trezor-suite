@@ -15,7 +15,7 @@ export const EosPublicKey = Type.Object({
 
 export type EosTxHeader = Static<typeof EosTxHeader>;
 export const EosTxHeader = Type.Object({
-    expiration: Type.Uint(),
+    expiration: Type.Union([Type.Uint(), Type.String()]), // In tests expiration is a ISO date string
     refBlockNum: Type.Number(),
     refBlockPrefix: Type.Number(),
     maxNetUsageWords: Type.Number(),
