@@ -68,6 +68,7 @@ export const GetAddress = Type.Object({
     address: Type.Optional(Type.String()),
     showOnTrezor: Type.Optional(Type.Boolean()),
     chunkify: Type.Optional(Type.Boolean()),
+    useEventListener: Type.Optional(Type.Boolean()),
 });
 
 export interface Address {

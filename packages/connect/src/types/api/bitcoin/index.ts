@@ -10,7 +10,7 @@ import { Static, Type } from '@trezor/schema-utils';
 export type SignMessage = Static<typeof SignMessage>;
 export const SignMessage = Type.Object({
     path: DerivationPath,
-    coin: Type.String(),
+    coin: Type.Optional(Type.String()),
     message: Type.String(),
     hex: Type.Optional(Type.Boolean()),
     no_script_type: Type.Optional(Type.Boolean()),
