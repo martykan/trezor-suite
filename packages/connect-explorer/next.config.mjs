@@ -37,9 +37,9 @@ export default withNextra({
             test: /\.(svg)$/,
             type: 'asset/resource',
         });
-
         config.plugins.push(
             new webpack.DefinePlugin({
+                __SUITE_WEB_URL__: JSON.stringify(process.env.__SUITE_WEB_URL__),
                 'process.env.COMMIT_HASH': JSON.stringify(commitHash),
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
                 'process.env.BUILD_TARGET': JSON.stringify(process.env.BUILD_TARGET),
